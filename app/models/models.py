@@ -13,13 +13,8 @@ db = SQLAlchemy()
 # need expierence, and this will be given an update to us from the fontend
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    player_saves = db.relationship('PlayerSave', backref='user') 
     username = db.Column(db.String(50), nullable=False)
     password = db.Column(db.String(255), nullable=False)  # Store hashed passwords
-    player_type = db.Column(db.String(50), nullable=False)
-    player_asset = db.Column(db.String(50), nullable=False)
-    player_health = db.Column(db.Integer, nullable=False)
-    xp = db.Column(db.Integer, nullable=False) # this will be updated to us from the frontend
 
     def set_password(self, password):
         self.Password = generate_password_hash(password)
