@@ -32,10 +32,15 @@
     - The AI API's will need some of the user data [S] (this is a should since AI integration in general is a should)
         - The website should be clear on this point
     - Taking in user data is a **BIG** security risk
-        - The website *should* implement security measures to protect against any malicious code uploaded instead of regular videos or photos
+        - The website *should* implement security measures to protect against any malicious code uploaded instead of regular videos or photos. 
+            - Sanitize inputs
+            - This should mostly be handled by Flask and its various extensions
+    - The website could have OAuth authentication though Meta or Google accounts to sign in
+        - Flask-OAuth/OAuth2 (they're now the same name for the extension) could be used for this
 ## UI Requirements 
 ## Risks
 - Copywrite
 - Malicious content sent to the server via the form
+    - Should be handled by Flask
 ## Success metrics
 - There must be a seperate webpage for tracking user engagement [M]
