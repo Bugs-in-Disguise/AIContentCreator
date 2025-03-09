@@ -1,6 +1,6 @@
 from flask import Blueprint
 from app.models import User
-from app.views import load_user, login, logout, register
+from app.views import load_user, login, logout, register, serve_image, create_post
 from flask_login import LoginManager, login_required
 main = Blueprint("main", __name__, template_folder="templates")
 
@@ -24,3 +24,7 @@ main.add_url_rule("/logout", view_func=logout, methods=['GET'])
 # login_required(logout)
 
 main.add_url_rule("/register", view_func=register, methods=["GET", "POST"])
+
+main.add_url_rule("/create_post", view_func=create_post, methods=["GET", "POST"])
+
+main.add_url_rule("/image/<string:filename>", view_func=serve_image, methods=["GET"])

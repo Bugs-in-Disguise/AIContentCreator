@@ -1,4 +1,4 @@
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hash
 from sqlalchemy.dialects.postgresql import ARRAY
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
@@ -14,12 +14,24 @@ db = SQLAlchemy()
 # need expierence, and this will be given an update to us from the fontend
 class User(UserMixin, db.Model): # needs to inherit from UserMixin to be compatible with flask-login
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    username = db.Column(db.String(50), nullable=False)
+    username = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.String(255), nullable=False)  # Store hashed passwords
-    email = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(50), nullable=False, unique=True)
+    posts = db.relationship('Post', backref='user')
 
     def set_password(self, password):
         self.Password = generate_password_hash(password)
+    
+class Post(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title = db.Column(db.String(50), nullable=False)
+    description = db.Column(db.String(255), nullable=False)
+    image_id = db.relationship('Image', uselist=False) # one-to-one relationship
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False) # associated user
 
-    def check_password(self, password):
-        return check_password_hash(self.Password, password)
+class Image(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    image = db.Column(db.LargeBinary, nullable=False)
+    name = db.Column(db.String(255), nullable=False)
+    extension = db.Column(db.String(10), nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
