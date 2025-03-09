@@ -1,6 +1,9 @@
 from google import genai
 
-def generate_instagram_post(api_key, model, industry, audience, description):
+def generate_instagram_post(industry, audience, description):
+    api_key = "AIzaSyC4_Of0KLBwuZ-x6JmzBroOnso580FnQCg"
+    model = "gemini-2.0-flash"
+
     client = genai.Client(api_key=api_key)
 
     prompt = (
@@ -25,8 +28,6 @@ def generate_instagram_post(api_key, model, industry, audience, description):
 
 # Example usage
 if __name__ == "__main__":
-    api_key = "AIzaSyC4_Of0KLBwuZ-x6JmzBroOnso580FnQCg"
-    model = "gemini-2.0-flash"
 
     industry = input("What industry are you a part of? ")
     audience = input("What is your target Audience? ")
@@ -35,7 +36,7 @@ if __name__ == "__main__":
     # audience = "highschoolers"
     # description = "dont forget to give your prom date some beautiful flowers"
 
-    post_text = generate_instagram_post(api_key, model, industry, audience, description)
+    post_text = generate_instagram_post(industry, audience, description)
     print(post_text)
 
 
