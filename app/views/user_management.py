@@ -27,7 +27,7 @@ def login():
 
         #TODO validate url scheme in flask before allowing user login
 
-        return redirect(next or url_for('index')) # either go to their page or go to the main page
+        return redirect(next or url_for('main.default')) # either go to their page or go to the main page
     else: # otherwise return them to the login page if they didn't validate, and keep the stuff they have in their form, and also sent it to them if it's just a get request
         return render_template('auth/login.html', form=form)
 
