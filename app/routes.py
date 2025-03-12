@@ -2,6 +2,7 @@ from flask import Blueprint
 from app.models import User
 from app.views import load_user, login, logout, register, serve_image, create_post
 from flask_login import LoginManager, login_required
+from flask import render_template
 main = Blueprint("main", __name__, template_folder="templates")
 
 login_manager = LoginManager()
@@ -10,7 +11,7 @@ login_manager = LoginManager()
 @main.route("/", methods=['GET'])
 @login_required
 def default():
-    return "<p> Hello World! </p>"
+    return render_template("home/index.html")
 
 # set the user loader callback (the function to return a user object given an id)
 login_manager.user_loader(load_user)
