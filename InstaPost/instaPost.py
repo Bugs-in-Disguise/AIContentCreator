@@ -171,7 +171,24 @@ class API:
         self.logger.addHandler(ch)
         self.total_requests = 0
 
-    # Function to log in to Instagram
+    # Function to handle the challenge
+    def handle_challenge(self, challenge_url):
+        challenge_url = API_URL + challenge_url[1:]
+        response = self.session.get(challenge_url)
+        if response.status_code == 200:
+            challenge_data = response.json()
+            if challenge_data.get("step_name") == "select_verify_method":
+                choice = input("Choose a verification method (0: SMS, 1: Email): ")
+                self.session.post(challenge_url, data={"choice": choice})
+            elif challenge_data.get("step_name") == "verify_code":
+                code = input("Enter the verification code sent to you: ")
+                self.session.post(challenge_url, data={"security_code": code})
+            else:
+                self.logger.error("Unknown challenge step: {}".format(challenge_data.get("step_name")))
+        else:
+            self.logger.error("Failed to load challenge page: {}".format(response.text))
+
+    # Modify the login function to handle challenges
     def login(self):
         self.session.headers.update(REQUEST_HEADERS)
         self.session.headers.update({"User-Agent": self.user_agent})
@@ -192,9 +209,13 @@ class API:
         if response.status_code == 200:
             self.is_logged_in = True
             self.logger.info("Logged in successfully")
+        elif response.status_code == 400 and "challenge_required" in response.text:
+            challenge_url = response.json()["challenge"]["api_path"]
+            self.handle_challenge(challenge_url)
         else:
             self.logger.error("Failed to log in: {}".format(response.text))
             self.is_logged_in = False
+
 
     # Function to upload a photo to Instagram
     def upload_photo(self, photo, caption=None):
