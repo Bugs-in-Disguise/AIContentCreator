@@ -13,6 +13,11 @@ login_manager = LoginManager()
 def default():
     return render_template("home/index.html")
 
+# About page route
+@main.route("/about", methods=['GET'])
+def about():
+    return render_template("about.html")
+
 # set the user loader callback (the function to return a user object given an id)
 login_manager.user_loader(load_user)
 login_manager.login_view = "main.login"
