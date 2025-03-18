@@ -1,9 +1,10 @@
 <!doctype html>
 {% from "_formhelper.html" import render_field %}
-<title>{% block title %}{% endblock %} - Flaskr</title>
+<title>{% block title %}{% endblock %} - ContentFlow</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <nav>
-  <h1>Flaskr</h1>
+  <h1>ContentFlow</h1>
   <ul>
     {% if current_user.is_authenticated %}
       <li><span>{{ current_user.username }}</span>
@@ -12,9 +13,13 @@
       <li><a href="{{ url_for('main.register') }}">Register</a>
       <li><a href="{{ url_for('main.login') }}">Log In</a>
     {% endif %}
+    <li><a href="{{ url_for('main.about') }}">About</a>
   </ul>
+  <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+    <i class="fa-solid fa-sun"></i>
+  </button>
 </nav>
-<section class="content">
+<section class="content main-content">
   <header>
     {% block header %}{% endblock %}
   </header>
@@ -23,3 +28,35 @@
   {% endfor %}
   {% block content %}{% endblock %}
 </section>
+
+<!-- Darkmode/Lightmode Script. Might move later -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const toggleButton = document.getElementById('theme-toggle');
+    const rootElement = document.documentElement;
+
+    // Load the saved theme from localStorage
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      rootElement.classList.add('dark-mode');
+      toggleButton.innerHTML = '<i class="fa-solid fa-moon"></i>';
+    } else {
+      rootElement.classList.remove('dark-mode');
+      toggleButton.innerHTML = '<i class="fa-solid fa-sun"></i>';
+    }
+
+    // Toggle theme on button click
+    toggleButton.addEventListener('click', () => {
+      if (rootElement.classList.contains('dark-mode')) {
+        rootElement.classList.remove('dark-mode');
+        toggleButton.innerHTML = '<i class="fa-solid fa-sun"></i>';
+        localStorage.setItem('theme', 'light');
+      } else {
+        rootElement.classList.add('dark-mode');
+        toggleButton.innerHTML = '<i class="fa-solid fa-moon"></i>';
+        localStorage.setItem('theme', 'dark');
+      }
+    });
+  });
+</script>
+</body>
