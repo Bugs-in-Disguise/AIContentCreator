@@ -1,4 +1,12 @@
-## instaPost
+# InstaPost
+
+This is a branch of the old python package instabot, specifically the api from this github repo: https://github.com/instagrambot/api.git. 
+It used a bunch of other depricated packages and no longer worked on the latest versions of python. I went through condenced it by removing anything I didn't
+need for this project, and updated all the dependancies. It now runs on python 3.13, and is focused on logging into instagram and posting.
+
+> DISCLAIMER: The purpose of this was to get an MVP for a project until we can get the official Instagram API. The way this script works, Instagram will
+> eventually detect that your are running a bot and will require a captia challange (which this script cannont handle). Currently I haven't tested much,
+> but I have gotten roughly 20-40 logins before it was noticed.
 
 This script logs into an Instagram account and uploads a photo with a caption. It uses the `requests` library to interact with the Instagram API and the `Pillow` library to handle image processing.
 
