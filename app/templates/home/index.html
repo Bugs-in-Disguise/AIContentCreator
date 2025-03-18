@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block header %}
+  <h1>Welcome to Flaskr</h1>
+{% endblock %}
+
+{% block content %}
+  <ul>
+    <li><a href="{{ url_for('main.register') }}">Register</a></li>
+    <li><a href="{{ url_for('main.login') }}">Log In</a></li>
+    <li><a href="{{ url_for('main.create_post') }}">Create Post</a></li>
+  </ul>
+{% endblock %}
