@@ -3,6 +3,7 @@ from app.models import User
 from app.views import load_user, login, logout, register, serve_image, create_post
 from flask_login import LoginManager, login_required
 from flask import render_template
+import calendar
 main = Blueprint("main", __name__, template_folder="templates")
 
 login_manager = LoginManager()
@@ -17,6 +18,13 @@ def default():
 @main.route("/about", methods=['GET'])
 def about():
     return render_template("about.html")
+
+@main.route("/calender", methods=['GET'])
+@login_required
+def calender():
+    cal = calendar.HTMLCalendar(calendar.SUNDAY)
+    return render_template('calender.html', calendar=cal.formatmonth(2025, 4))
+    
 
 # set the user loader callback (the function to return a user object given an id)
 login_manager.user_loader(load_user)

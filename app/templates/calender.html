@@ -1,0 +1,12 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Simple Calendar{% endblock %}
+
+{% block header %}
+  <h1>Simple Calendar</h1>
+{% endblock %}
+
+{% block content %}
+    {{ calendar | safe }}
+{% endblock %}
