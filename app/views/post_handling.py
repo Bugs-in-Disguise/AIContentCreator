@@ -48,11 +48,19 @@ def create_post():
     if request.method == "POST" and form.validate():
         title = request.form.get("title")
         description = request.form.get("description")
+        post_date = request.form.get("date")
+        scheduled = request.form.get("schedule_post")
+        if scheduled == None:
+            scheduled = False
+        else:
+            scheduled = True
 
         new_post = Post(
             title=title,
             description=description,
-            user_id=current_user.id
+            user_id=current_user.id,
+            date=post_date,
+            scheduled=scheduled
         )
 
         # upload the new post to the db
@@ -83,6 +91,7 @@ def serve_post(title):
         if form.validate():
             post.title = form.title.data
             post.description = form.description.data
+            post.scheduled = form.schedule_post.data
             
             # Handle image upload
             image = upload_image()
@@ -105,6 +114,9 @@ def serve_post(title):
             return redirect(url_for('main.serve_post', title=post.title))
     else:
         form = CreatePostForm(obj=post)
+        if post.scheduled == True:
+            form.schedule_post.data = "y"
+        # don't need an else because it'll just be unchecked by default
 
         # If an image exists, show it in the template
         existing_image = db.session.execute(db.select(Image).filter_by(post_id=post.id)).scalar_one_or_none()

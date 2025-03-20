@@ -31,6 +31,9 @@ class Post(db.Model):
     description = db.Column(db.String(255), nullable=False)
     image_id = db.relationship('Image', uselist=False) # one-to-one relationship
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False) # associated user
+    pending_status = db.Column(db.Boolean, nullable=False, default=False)
+    date = db.Column(db.Date, nullable=False)
+    scheduled = db.Column(db.Boolean, nullable=False)
 
 class Image(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)

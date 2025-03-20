@@ -1,4 +1,4 @@
-from wtforms import Form, StringField, PasswordField, validators, FileField, SubmitField
+from wtforms import Form, StringField, PasswordField, validators, FileField, SubmitField, DateField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo
 from flask_wtf.file import FileAllowed
 
@@ -30,4 +30,6 @@ class CreatePostForm(Form):
         # FileRequired(), TODO: FIX THIS https://stackoverflow.com/questions/69114986/flask-wtforms-validation-fails-with-filerequired-validator-even-though-t
         FileAllowed(['jpg', 'png', 'jpeg'], 'Images Only!') 
     ])
+    schedule_post = BooleanField("Schedule this post?")
+    date = DateField('Date', format='%Y-%m-%d', validators=[DataRequired()])
     submit = SubmitField('Post')
