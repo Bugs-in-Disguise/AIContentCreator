@@ -39,6 +39,9 @@ def register():
         username = form.username.data
         email = form.email.data
         password = form.password.data
+        business_type = form.business_type.data
+        insta_username = form.insta_username.data
+        insta_password = form.insta_password.data
 
         # Check if username or email already exists
         user = db.session.execute(db.session.query(User).filter_by(username=username)).scalar_one_or_none()
@@ -48,7 +51,8 @@ def register():
 
         # Create a new user and store it in the database
         hashed_password = generate_password_hash(password)
-        new_user = User(username=username, email=email, password=hashed_password)
+        hashed_insta_password = generate_password_hash(insta_password)
+        new_user = User(username=username, email=email, password=hashed_password, business_type=business_type, insta_username=insta_username, insta_password=hashed_insta_password)
 
         db.session.add(new_user)
         db.session.commit()

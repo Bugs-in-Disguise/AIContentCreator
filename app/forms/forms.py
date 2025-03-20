@@ -13,11 +13,14 @@ class LoginForm(Form):
 class RegistrationForm(Form):
     username = StringField('Username', validators=[DataRequired(), Length(min=4, max=25)])
     email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', [
+    business_type = StringField('Business Type', validators=[DataRequired(), Length(min=4, max=25)])
+    insta_username = StringField('Instagram Username', validators=[DataRequired()])
+    insta_password = PasswordField('Instagram Password', [validators.DataRequired()])
+    password = PasswordField('ContentFlow Password', [
         validators.DataRequired(), # make sure they include this
         validators.EqualTo('confirm_password', message="Passwords must match") # make sure this matches the confirm field
     ])
-    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password', message='Passwords must match')])
+    confirm_password = PasswordField('Confirm ContentFlow Password', validators=[DataRequired(), EqualTo('password', message='Passwords must match')])
     submit = SubmitField('Register')
 
 class CreatePostForm(Form):

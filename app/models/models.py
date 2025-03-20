@@ -18,6 +18,9 @@ class User(UserMixin, db.Model): # needs to inherit from UserMixin to be compati
     password = db.Column(db.String(255), nullable=False)  # Store hashed passwords
     email = db.Column(db.String(50), nullable=False, unique=True)
     posts = db.relationship('Post', backref='user')
+    business_type = db.Column(db.String(50), nullable=False, unique=True)
+    insta_username = db.Column(db.String(50), nullable=False, unique=True)
+    insta_password = db.Column(db.String(255), nullable=False, unique=True)
 
     def set_password(self, password):
         self.Password = generate_password_hash(password)

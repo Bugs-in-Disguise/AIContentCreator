@@ -73,8 +73,8 @@ def create_post():
     else:
         return render_template('posts/create_post.html', form=form) # give them the create post page and keep their form data if they're just being routed back to it
 
-# this should just be visable by anyone
-def serve_image(filename): # this'll be given a name for the 
+# this should ONLY
+def serve_post(filename): 
     image = db.session.execute(db.Query(Image).filter_by(name=filename)).scalar_one_or_none()
     if image is not None:
         return send_file(BytesIO(image.image), mimetype=f"image/{image.extension}") # be aware that extensions are capitalized for some reason
