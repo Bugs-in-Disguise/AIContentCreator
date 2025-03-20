@@ -9,7 +9,7 @@
 /* Dark mode theme */
 :root.dark-mode {
     --text: #f6fefd;
-    --background: #010907;
+    --background: #310A31;
     --primary: #977af5;
     --secondary: #17eeb4;
     --accent: #c150f2;
@@ -209,9 +209,57 @@ form input[type="submit"]:hover {
     /* -webkit-clip-path: polygon(0 0, 0 100%, 0 100%,  100% 0); */
     /* clip-path: polygon(0 0, 0 100%, 0 100% ,  100% 0 ); */
     transform: skewY(25deg); 
-
-    background: linear-gradient(65deg, var(--secondary), var(--primary));
+    /* background: linear-gradient(65deg, var(--secondary), var(--primary)); */
+    background-color: var(--accent);
     z-index: -11;
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2); /* Added shadow for depth */
 
+}
+/* About Page Styles */
+.about-intro {
+    text-align: center;
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    color: var(--text);
+}
+
+.about-mission, .about-features, .about-platforms, .about-team, .about-contact {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background-color: var(--background);
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.about-mission h2, .about-features h2, .about-platforms h2, .about-team h2, .about-contact h2 {
+    color: var(--primary);
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+    text-align: center;
+}
+
+.about-features ul, .about-platforms ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.about-features ul li, .about-platforms ul li {
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    color: var(--text);
+}
+
+.about-features ul li strong, .about-platforms ul li strong {
+    color: var(--accent);
+}
+
+.about-contact a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.about-contact a:hover {
+    text-decoration: underline;
 }
