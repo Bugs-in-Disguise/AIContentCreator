@@ -47,7 +47,7 @@ def register():
         user = db.session.execute(db.session.query(User).filter_by(username=username)).scalar_one_or_none()
         if user is not None:
             flash("Username already taken. Please choose another one.", "danger")
-            return redirect(url_for('register'))
+            return redirect(url_for('main.register'))
 
         # Create a new user and store it in the database
         hashed_password = generate_password_hash(password)

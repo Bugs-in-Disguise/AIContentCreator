@@ -1,6 +1,6 @@
 from flask import Blueprint
 from app.models import User
-from app.views import load_user, login, logout, register, serve_post, create_post
+from app.views import load_user, login, logout, register, serve_post, create_post, get_image
 from flask_login import LoginManager, login_required
 from flask import render_template
 import calendar
@@ -41,4 +41,7 @@ main.add_url_rule("/register", view_func=register, methods=["GET", "POST"])
 
 main.add_url_rule("/create_post", view_func=create_post, methods=["GET", "POST"])
 
-main.add_url_rule("/post/<int:id>", view_func=serve_post, methods=["GET, POST"])
+main.add_url_rule("/post/<string:title>", view_func=serve_post, methods=["GET", "POST"])
+# login_required(serve_post)
+
+main.add_url_rule("/image/<int:post_id>", view_func=get_image, methods=["GET"])

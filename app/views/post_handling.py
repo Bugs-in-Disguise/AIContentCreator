@@ -3,8 +3,8 @@ from app.models import Post, Image
 from app.models import db
 from flask import request, flash, redirect, url_for, render_template, send_file
 from werkzeug.utils import secure_filename
-from io import BytesIO
 from flask_login import current_user
+from io import BytesIO
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}  # Specify allowed image types
 
@@ -19,14 +19,15 @@ def allowed_file(filename):
 
 # i want this to just return the binary data for the image
 def upload_image():
-    if 'file' not in request.files:
+    if 'post_image' not in request.files:
         flash("No file", "danger")
+        return None  # <-- Fix here
 
     file = request.files.get('post_image')
 
     if file.filename == '':
         flash("No selected file", "danger")
-        return redirect(request.url)
+        return None  # <-- Fix here
     
     file_extension = allowed_file(file.filename)
 
@@ -39,7 +40,8 @@ def upload_image():
         return image_data, filename, file_extension
     else:
         flash("Invalid file type", "danger")
-        return redirect(request.url)
+        return None  # <-- Fix here
+
 
 def create_post():
     form = CreatePostForm(request.form)
@@ -69,14 +71,54 @@ def create_post():
         db.session.add(new_image)
         db.session.commit()
 
-        return redirect(next or url_for('main.default'))
+        return redirect(url_for('main.serve_post', title=title))
     else:
         return render_template('posts/create_post.html', form=form) # give them the create post page and keep their form data if they're just being routed back to it
 
-# this should ONLY
-def serve_post(filename): 
-    image = db.session.execute(db.Query(Image).filter_by(name=filename)).scalar_one_or_none()
-    if image is not None:
-        return send_file(BytesIO(image.image), mimetype=f"image/{image.extension}") # be aware that extensions are capitalized for some reason
+def serve_post(title):
+    post = db.session.execute(db.select(Post).filter_by(title=title)).scalar_one_or_none()
+    
+    if request.method == 'POST':
+        form = CreatePostForm(request.form)
+        if form.validate():
+            post.title = form.title.data
+            post.description = form.description.data
+            
+            # Handle image upload
+            image = upload_image()
+            if image:
+                existing_image = db.session.execute(db.select(Image).filter_by(post_id=post.id)).scalar_one_or_none()
+                if existing_image:
+                    existing_image.image = image[0]
+                    existing_image.name = image[1]
+                    existing_image.extension = image[2]
+                else:
+                    new_image = Image(
+                        image=image[0],
+                        name=image[1],
+                        extension=image[2],
+                        post_id=post.id
+                    )
+                    db.session.add(new_image)
+
+            db.session.commit()
+            return redirect(url_for('main.serve_post', title=post.title))
     else:
+        form = CreatePostForm(obj=post)
+
+        # If an image exists, show it in the template
+        existing_image = db.session.execute(db.select(Image).filter_by(post_id=post.id)).scalar_one_or_none()
+        if existing_image:
+            image_url = url_for('main.get_image', post_id=post.id)
+        else:
+            image_url = None
+
+    return render_template('posts/post.html', form=form, image_url=image_url)
+
+def get_image(post_id):
+    image = db.session.execute(db.select(Image).filter_by(post_id=post_id)).scalar_one_or_none()
+    if image:
+        return send_file(BytesIO(image.image), mimetype=f'image/{image.extension}')
+    else:
+        flash("Image not found", "danger")
         return redirect(url_for('main.default'))
