@@ -4,9 +4,11 @@
     --primary: #17eeb4;
     --secondary: #977af5;
     --accent: #c150f2;
+
+    /* Add transition for smooth theme switching */
+    transition: background-color 0.5s ease, color 0.5s ease;
 }
 
-/* Dark mode theme */
 :root.dark-mode {
     --text: #f6fefd;
     --background: #310A31;
@@ -21,8 +23,10 @@ body {
     padding: 0;
     background-color: var(--background);
     color: var(--text);
-}
 
+    /* Add transition for smooth theme switching */
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
 nav {
     /* background: linear-gradient(135deg, var(--primary), var(--secondary)); */
     background: var(--primary) ;
@@ -41,6 +45,9 @@ nav {
     width: 90%; /* Adjust width to fit the screen */
     max-width: 1200px; /* Limit the maximum width */
     z-index: 1000;
+
+    transition: background-color 0.5s ease, color 0.5s ease;
+
 
 }
 
@@ -199,6 +206,9 @@ form input[type="submit"]:hover {
     z-index: -10;
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2); /* Added shadow for depth */
     
+    transition: background-color 0.5s ease;
+
+
 }
 #background-two {
     position: absolute;
@@ -268,22 +278,58 @@ form input[type="submit"]:hover {
 
 .calendar {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 10px;
-    margin-bottom: 20px;
+    grid-template-columns: repeat(7, 1fr); /* 7 columns for the days of the week */
+    gap: 10px; /* Space between grid items */
+    margin: 20px auto;
+    max-width: 800px; /* Optional: Limit the calendar's width */
 }
 
-.day {
-    background-color: #fff;
-    border: 1px solid #ddd;
+.calendar-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px auto;
+    max-width: 800px;
+}
+
+.nav-button {
+    background-color: var(--primary);
+    color: var(--text);
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.nav-button:hover {
+    background-color: var(--secondary);
+}
+
+.current-month {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--text);
+}
+
+.calendar-day {
+    background-color: var(--background);
+    border: 1px solid var(--secondary);
     border-radius: 5px;
     padding: 10px;
+    text-align: center;
     position: relative;
-    height: 100px;
+    height: 100px; /* Set a fixed height for each day */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.bubble {
-    background-color: #007bff;
+.calendar-day .date {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.event-bubble {
+    background-color: var(--accent);
     color: white;
     border-radius: 50%;
     width: 20px;
@@ -295,8 +341,17 @@ form input[type="submit"]:hover {
     top: 5px;
     right: 5px;
     cursor: pointer;
+    font-size: 0.8rem;
 }
 
-.bubble:hover {
-    background-color: #0056b3;
+.event-bubble:hover {
+    background-color: var(--primary);
+}
+.day-label {
+    font-weight: bold;
+    text-align: center;
+    padding: 10px 0;
+    background-color: var(--background);
+    color: var(--text);
+    border-bottom: 1px solid var(--secondary);
 }

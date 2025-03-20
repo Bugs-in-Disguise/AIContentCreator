@@ -7,11 +7,25 @@
 {% endblock %}
 
 {% block content %}
-    <div class="calendar" id="calendar">
-        <div class="calendar-grid">
-            {% for day in calendar_days %}
+    <div class="calendar-navigation">
+        <a href="{{ url_for('main.calender', month=prev_month, year=prev_year) }}" class="nav-button">← Previous</a>
+        <span class="current-month">{{ current_month }}/{{ current_year }}</span>
+        <a href="{{ url_for('main.calender', month=next_month, year=next_year) }}" class="nav-button">Next →</a>
+    </div>
+
+    <div class="calendar">
+        <div class="day-label">Mon</div>
+        <div class="day-label">Tue</div>
+        <div class="day-label">Wed</div>
+        <div class="day-label">Thu</div>
+        <div class="day-label">Fri</div>
+        <div class="day-label">Sat</div>
+        <div class="day-label">Sun</div>
+
+        {% for day in calendar_days %}
+            {% if day.date %}
                 <div class="calendar-day" data-day="{{ day.date.day }}" data-month="{{ day.date.month }}" data-year="{{ day.date.year }}">
-                    <div class="date">{{ day.date }}</div>
+                    <div class="date">{{ day.date.day }}</div>
                     <div class="events">
                         {% for post in day.posts %}
                             <div class="event-bubble" title="{{ post.title }}">
@@ -20,8 +34,10 @@
                         {% endfor %}
                     </div>
                 </div>
-            {% endfor %}
-        </div>
+            {% else %}
+                <div class="calendar-day empty"></div>
+            {% endif %}
+        {% endfor %}
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
