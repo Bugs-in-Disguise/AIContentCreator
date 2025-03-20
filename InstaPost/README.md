@@ -1,110 +1,137 @@
 # InstaPost
 
+This package allows you to generate Instagram captions using AI and schedule posts with images and captions to be uploaded at a specified date and time. It includes the following components:
+
+- **`captionGen.py`**: Generates engaging Instagram captions using AI.
+- **`instaPost.py`**: Handles Instagram login and photo uploads.
+- **`schedulePost.py`**: Combines caption generation and photo upload to schedule posts.
+
 This is a branch of the old python package instabot, specifically the api from this github repo: https://github.com/instagrambot/api.git. 
 It used a bunch of other depricated packages and no longer worked on the latest versions of python. I went through condenced it by removing anything I didn't
 need for this project, and updated all the dependancies. It now runs on python 3.13, and is focused on logging into instagram and posting.
 
-> DISCLAIMER: The purpose of this was to get an MVP for a project until we can get the official Instagram API. The way this script works, Instagram will
+> **NOTE:** The purpose of this was to get an MVP for a project until we can get the official Instagram API. The way this script works, Instagram will
 > eventually detect that your are running a bot and will require a captia challange (which this script cannont handle). Currently I haven't tested much,
 > but I have gotten roughly 20-40 logins before it was noticed.
 
+---
+
 This script logs into an Instagram account and uploads a photo with a caption. It uses the `requests` library to interact with the Instagram API and the `Pillow` library to handle image processing.
 
-### Configuration
+## Usage
 
-The script includes several configuration constants:
-
-- `API_DOMAIN`: The domain for the Instagram API.
-- `API_URL`: The base URL for the Instagram API.
-- `USER_AGENT_BASE`: The user agent string for the Instagram app.
-- `SIG_KEY_VERSION`: The signature key version.
-- `IG_SIG_KEY`: The Instagram signature key.
-- `REQUEST_HEADERS`: The default request headers for the Instagram API.
-
-### Utility Functions
-
-#### `get_image_size(fname)`
-
-Returns the width and height of the image specified by `fname`.
-
-#### `resize_image(fname)`
-
-Resizes the image specified by `fname` to meet Instagram's aspect ratio requirements. Returns the path to the resized image.
-
-#### `compatible_aspect_ratio(size)`
-
-Checks if the aspect ratio of the image size `size` is compatible with Instagram's requirements. Returns `True` if compatible, `False` otherwise.
-
-### `API` Class
-
-The `API` class handles interactions with the Instagram API.
-
-#### `__init__(self, username, password)`
-
-Initializes the `API` object with the specified `username` and `password`. Sets up device settings, user agent, and session.
-
-#### `login(self)`
-
-Logs into the Instagram account using the provided username and password. Updates the session headers and sends a login request to the Instagram API.
-
-#### `upload_photo(self, photo, caption=None)`
-
-Uploads the specified `photo` with the optional `caption` to the Instagram account. Resizes the photo if necessary and sends the upload request to the Instagram API.
-
-#### `configure_photo(self, upload_id, photo, caption="")`
-
-Configures the uploaded photo with the specified `upload_id`, `photo`, and `caption`. Sends a request to the `media/configure/` endpoint.
-
-#### `send_request(self, endpoint, post=None, login=False, with_signature=True, headers=None, extra_sig=None, timeout_minutes=None)`
-
-Sends a request to the specified `endpoint` with the optional `post` data. Handles request headers, signatures, and retries.
-
-#### `generate_signature(data)`
-
-Generates a signature for the specified `data` using the Instagram signature key.
-
-#### Properties
-
-- `cookie_dict`: Returns the session cookies as a dictionary.
-- `token`: Returns the CSRF token from the session cookies.
-- `user_id`: Returns the user ID from the session cookies.
-- `rank_token`: Returns the rank token for the user.
-- `default_data`: Returns the default data for requests, including UUID, user ID, and CSRF token.
-
-#### `json_data(self, data=None)`
-
-Returns the specified `data` as a JSON string, including the default data.
-
-### Main Function
-
-The main function prompts the user for their Instagram username, password, photo path, and caption. It then creates an `API` object, logs into the Instagram account, and uploads the photo with the specified caption.
-
-### Example Usage
-
-To use the script, run it from the command line:
-
-```sh
-python instagramBot.py
+### 1. **Generate Captions**
+Run the `captionGen.py` script to generate a caption for your Instagram post:
+```bash
+python captionGen.py
 ```
+Follow the prompts to input:
+- Your industry
+- Your target audience
+- A description of the post
 
-Follow the prompts to enter your Instagram username, password, photo path, and caption. The script will log into your Instagram account and upload the specified photo with the provided caption.
+The script will output an AI-generated caption.
 
-### Dependencies
+---
 
-- `requests`: For making HTTP requests to the Instagram API.
-- `Pillow`: For image processing.
-- `uuid`: For generating unique identifiers.
-- `hmac`, `hashlib`, `urllib.parse`: For generating request signatures.
-- `logging`: For logging messages.
+### 2. **Upload a Photo**
+Run the `instaPost.py` script to upload a photo with a caption:
+```bash
+python instaPost.py
+```
+Follow the prompts to input:
+- Your Instagram username and password
+- The path to the photo
+- The caption for the photo
+
+The script will log in to your Instagram account and upload the photo.
+
+---
+
+### 3. **Schedule a Post**
+Run the `schedulePost.py` script to schedule a post:
+```bash
+python schedulePost.py
+```
+Follow the prompts to input:
+- Your Instagram username and password
+- The path to the photo
+- Your industry, audience, and post description (for caption generation)
+- The date and time to post (in `YYYY-MM-DD HH:MM` format)
+
+The script will:
+1. Generate a caption using AI.
+2. Ask for your approval of the caption.
+3. Wait until the specified time and upload the photo with the caption.
+
+---
+
+
+## Example Workflow
+
+1. **Generate a Caption**:
+   ```bash
+   python captionGen.py
+   ```
+   Input:
+   ```
+   Industry: flowers
+   Audience: high schoolers
+   Description: Don't forget to give your prom date some beautiful flowers.
+   ```
+   Output:
+   ```
+   "Make prom night unforgettable with a bouquet as beautiful as your date! 🌸💃 #PromFlowers"
+   ```
+
+2. **Schedule a Post**:
+   ```bash
+   python schedulePost.py
+   ```
+   Input:
+   ```
+   Instagram user email: your_email
+   Instagram password: your_password
+   Path to photo: /path/to/photo.png 
+   Industry: flowers
+   Audience: high schoolers
+   Description: Don't forget to give your prom date some beautiful flowers.
+   Date and time to post: 2025-03-21 18:00
+   ```
+
+   The script will:
+   - Generate a caption.
+   - Ask for your approval.
+   - Wait until the specified time and upload the post.
+
+---
+
+## Notes
+
+- Images work best in JPEG format, however other common forms like png shoud work just fine.
+- Instagram *will* detect bot activity and require CAPTCHA challenges after repeated logins. This currently cannot bypass this.
+- This package is intended for personal use and testing purposes only.
+
+---
+
+## Dependencies
 
 Install the required dependencies using `pip`:
-
-```sh
-pip install requests Pillow
+```bash
+pip install requests Pillow google-genai
 ```
 
-### Notes
+---
 
-- Ensure that the image file is in JPEG format and meets Instagram's aspect ratio requirements.
-- The script handles login, photo upload, and photo configuration, including retries and error handling.
-- The script uses a user agent string for the Instagram app and includes necessary request headers for interacting with the Instagram API.
+
+## Future Improvements
+
+- Integrate with the official Instagram Graph API for more reliable and secure functionality.
+- Add support for handling CAPTCHA challenges.
+- Improve error handling and logging.
+
+---
+
+## Disclaimer
+
+This package is not affiliated with or endorsed by Instagram. Use it at your own risk.
