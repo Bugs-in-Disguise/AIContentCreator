@@ -1,4 +1,3 @@
-
 {% extends 'base.html' %}
 
 {% block title %}Simple Calendar{% endblock %}
@@ -8,5 +7,42 @@
 {% endblock %}
 
 {% block content %}
-    {{ calendar | safe }}
+    <div class="calendar" id="calendar">
+        <div class="calendar-grid">
+            {% for day in calendar_days %}
+                <div class="calendar-day" data-day="{{ day.date.day }}" data-month="{{ day.date.month }}" data-year="{{ day.date.year }}">
+                    <div class="date">{{ day.date }}</div>
+                    <div class="events">
+                        {% for post in day.posts %}
+                            <div class="event-bubble" title="{{ post.title }}">
+                                {{ post.title }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const calendarElement = document.getElementById('calendar');
+            const events = JSON.parse(calendarElement.getAttribute('data-events'));
+
+            events.forEach(event => {
+                const eventDate = new Date(event.date);
+                const day = eventDate.getDate();
+                const month = eventDate.getMonth();
+                const year = eventDate.getFullYear();
+
+                const bubble = document.createElement('div');
+                bubble.className = 'event-bubble';
+                bubble.innerText = event.title;
+
+                const dayElement = calendarElement.querySelector(`.calendar-day[data-day="${day}"][data-month="${month}"][data-year="${year}"]`);
+                if (dayElement) {
+                    dayElement.appendChild(bubble);
+                }
+            });
+        });
+    </script>
 {% endblock %}

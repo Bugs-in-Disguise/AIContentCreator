@@ -1,9 +1,10 @@
 from flask import Blueprint
-from app.models import User
+from app.models import User, Post
 from app.views import load_user, login, logout, register, serve_image, create_post
-from flask_login import LoginManager, login_required
+from flask_login import LoginManager, login_required, current_user
 from flask import render_template
-import calendar
+# import calendar
+from datetime import date, timedelta
 main = Blueprint("main", __name__, template_folder="templates")
 
 login_manager = LoginManager()
@@ -22,9 +23,23 @@ def about():
 @main.route("/calender", methods=['GET'])
 @login_required
 def calender():
-    cal = calendar.HTMLCalendar(calendar.SUNDAY)
-    return render_template('calender.html', calendar=cal.formatmonth(2025, 4))
-    
+    # Get all posts for the current user (assuming user is logged in)
+    user_posts = Post.query.filter_by(user_id=current_user.id).all()  # current_user is now defined
+
+    # Generate a list of days for the current month
+    today = date.today()
+    start_date = date(today.year, today.month, 1)
+    end_date = date(today.year, today.month + 1, 1) - timedelta(days=1)
+
+    calendar_days = []
+    current_date = start_date
+    while current_date <= end_date:
+        # Filter posts for the current day
+        day_posts = [post for post in user_posts if post.date == current_date]
+        calendar_days.append({'date': current_date, 'posts': day_posts})
+        current_date += timedelta(days=1)
+
+    return render_template('calendar.html', calendar_days=calendar_days)
 
 # set the user loader callback (the function to return a user object given an id)
 login_manager.user_loader(load_user)

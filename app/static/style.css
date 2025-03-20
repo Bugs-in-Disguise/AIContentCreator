@@ -263,3 +263,40 @@ form input[type="submit"]:hover {
 .about-contact a:hover {
     text-decoration: underline;
 }
+
+/* Calender Styles */
+
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.day {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    position: relative;
+    height: 100px;
+}
+
+.bubble {
+    background-color: #007bff;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+}
+
+.bubble:hover {
+    background-color: #0056b3;
+}
