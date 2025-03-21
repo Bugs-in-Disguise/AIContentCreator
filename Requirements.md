@@ -53,10 +53,7 @@ Our solution is an AI powered tool that can generate, post, and monitor social m
             - This should mostly be handled by Flask and its various extensions
     - The website could have OAuth authentication though Meta or Google accounts to sign in
         - Flask-OAuth/OAuth2 (they're now the same name for the extension) could be used for this
-## UI Requirements 
 ## Risks
 - Copywrite
 - Malicious content sent to the server via the form
     - Should be handled by Flask
-## Success metrics
-- There must be a seperate webpage for tracking user engagement [M]
