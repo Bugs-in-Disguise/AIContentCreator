@@ -14,7 +14,7 @@ class RegistrationForm(Form):
     username = StringField('Username', validators=[DataRequired(), Length(min=4, max=25)])
     email = StringField('Email', validators=[DataRequired(), Email()])
     business_type = StringField('Business Type', validators=[DataRequired(), Length(min=4, max=25)])
-    insta_username = StringField('Instagram Username', validators=[DataRequired()])
+    insta_username = StringField('Instagram Email', validators=[DataRequired()])
     insta_password = PasswordField('Instagram Password', [validators.DataRequired()])
     password = PasswordField('ContentFlow Password', [
         validators.DataRequired(), # make sure they include this

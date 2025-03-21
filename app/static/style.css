@@ -317,34 +317,37 @@ form input[type="submit"]:hover {
     border: 1px solid var(--secondary);
     border-radius: 5px;
     padding: 10px;
-    text-align: center;
+    text-align: left;
     position: relative;
-    height: 100px; /* Set a fixed height for each day */
+    height: auto; /* Allow height to adjust based on content */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .calendar-day .date {
     font-weight: bold;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
+    text-align: center;
 }
 
-.event-bubble {
+.events {
+    display: flex;
+    flex-direction: column; /* Stack events vertically */
+    gap: 5px; /* Add spacing between event boxes */
+}
+
+.event-box {
     background-color: var(--accent);
     color: white;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    cursor: pointer;
-    font-size: 0.8rem;
+    border-radius: 5px;
+    padding: 5px 10px;
+    text-decoration: none; /* Remove underline for links */
+    display: block;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+    word-wrap: break-word; /* Ensure long titles wrap */
 }
 
-.event-bubble:hover {
+.event-box:hover {
     background-color: var(--primary);
 }
 .day-label {
