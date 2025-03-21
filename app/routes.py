@@ -109,7 +109,7 @@ main.add_url_rule("/login", view_func=login, methods=['GET', 'POST'])
 main.add_url_rule("/logout", view_func=logout, methods=['GET'])
 # login_required(logout)
 
-main.add_url_rule("/register", view_func=login_required(register), methods=["GET", "POST"])
+main.add_url_rule("/register", view_func=register, methods=["GET", "POST"])
 
 main.add_url_rule("/create_post", view_func=login_required(create_post), methods=["GET", "POST"])
 
