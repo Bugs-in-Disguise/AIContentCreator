@@ -7,7 +7,7 @@ def generate_instagram_post(industry, audience, description):
     client = genai.Client(api_key=api_key)
 
     prompt = (
-        f"Create one engaging Instagram post caption for a business in the {industry} industry. "
+        f"WRITE A SINGLE engaging Instagram post caption for a business in the {industry} industry. "
         f"The target audience is {audience}. "
         f"Here is a description of the post: {description}"
     	f"Use less than 100 words"

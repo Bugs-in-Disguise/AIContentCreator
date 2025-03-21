@@ -468,7 +468,7 @@ class API:
 
 # Main function to run the script
 if __name__ == "__main__":
-    username = input("Enter your Instagram username: ")
+    username = input("Enter your Instagram email: ")
     password = input("Enter your Instagram password: ")
     photo_path = input("Enter the path to the photo: ")
     caption = input("Enter the caption for the photo: ")

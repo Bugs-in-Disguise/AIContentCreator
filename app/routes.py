@@ -1,11 +1,14 @@
 from flask import Blueprint
 from app.models import User, Post
 from flask_login import LoginManager, login_required, current_user
-from app.views import load_user, login, logout, register, serve_post, create_post, get_image
-from flask import render_template, request
+from app.views import load_user, login, logout, register, serve_post, create_post, get_image, post_to_ig
+from flask import render_template, request, flash, redirect, url_for
 import calendar
 from datetime import date, timedelta
 main = Blueprint("main", __name__, template_folder="templates")
+from app.models import db
+from app.models import Image as ImageModel
+from io import BytesIO
 
 login_manager = LoginManager()
 
@@ -66,6 +69,34 @@ def calender():
         next_month=next_month,
         next_year=next_year
     )
+
+@main.route('/post_to_instagram/<int:post_id>', methods=['POST'])
+@login_required
+def post_to_instagram(post_id):
+    # Fetch the post and its associated image
+    post = db.session.execute(db.select(Post).filter_by(id=post_id)).scalar_one_or_none()
+    image = db.session.execute(db.select(ImageModel).filter_by(post_id=post_id)).scalar_one_or_none()
+
+    if not post or not image:
+        flash("Post or image not found", "danger")
+        return redirect(url_for('main.serve_post', title=post.title))
+
+    # Get the Instagram password from the form
+    insta_password = request.form.get("insta_password")
+    if not insta_password:
+        flash("Instagram password is required to post.", "danger")
+        return redirect(url_for('main.serve_post', title=post.title))
+
+    # Call the post_to_ig function
+    try:
+        post_to_ig(BytesIO(image.image), post.description, insta_password)
+        flash("Post successfully uploaded to Instagram!", "success")
+    except Exception as e:
+        flash(f"Failed to post to Instagram: {str(e)}", "danger")
+
+    return redirect(url_for('main.serve_post', title=post.title))
+
+
 
 # set the user loader callback (the function to return a user object given an id)
 login_manager.user_loader(load_user)

@@ -28,7 +28,7 @@ class User(UserMixin, db.Model): # needs to inherit from UserMixin to be compati
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(50), nullable=False, unique=True)
-    description = db.Column(db.String(255), nullable=False)
+    description = db.Column(db.String(1000), nullable=False)
     image_id = db.relationship('Image', uselist=False) # one-to-one relationship
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False) # associated user
     pending_status = db.Column(db.Boolean, nullable=False, default=False)
