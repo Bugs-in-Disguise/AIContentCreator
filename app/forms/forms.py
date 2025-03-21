@@ -1,4 +1,4 @@
-from wtforms import Form, StringField, PasswordField, validators, FileField, SubmitField, DateField, BooleanField
+from wtforms import Form, StringField, PasswordField, validators, FileField, SubmitField, DateField, BooleanField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo
 from flask_wtf.file import FileAllowed
 
@@ -25,7 +25,7 @@ class RegistrationForm(Form):
 
 class CreatePostForm(Form):
     title = StringField('Title', [validators.length(min=1, max=20)]) # should research what good lengths are for titles
-    description = StringField("Description", [validators.length(min=1)]) # should also do that resarch for descriptions
+    description = TextAreaField("Description", [validators.length(min=1)]) # should also do that resarch for descriptions
     post_image = FileField("Post's image", validators=[
         # FileRequired(), TODO: FIX THIS https://stackoverflow.com/questions/69114986/flask-wtforms-validation-fails-with-filerequired-validator-even-though-t
         FileAllowed(['jpg', 'png', 'jpeg'], 'Images Only!') 

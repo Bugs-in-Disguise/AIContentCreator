@@ -16,7 +16,7 @@ login_manager = LoginManager()
 @main.route("/", methods=['GET'])
 @login_required
 def default():
-    return render_template("home/index.html")
+    return render_template("about.html")
 
 # About page route
 @main.route("/about", methods=['GET'])

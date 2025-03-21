@@ -21,9 +21,9 @@
 </form>
 
 <!-- Add a button to post to Instagram -->
-<form method="POST" action="{{ url_for('main.post_to_instagram', post_id=post.id) }}">
-    <label for="insta_password">Enter your Instagram password:</label>
-    <input type="password" id="insta_password" name="insta_password" required>
-    <button type="submit" class="btn btn-primary">Post to Instagram</button>
+<form method="POST" action="{{ url_for('main.post_to_instagram', post_id=post.id) }}" class="instagram-form">
+    <label for="insta_password" class="instagram-label">Enter your Instagram password:</label>
+    <input type="password" id="insta_password" name="insta_password" class="instagram-input" required>
+    <button type="submit" class="btn btn-instagram">Post to Instagram</button>
 </form>
 {% endblock %}
