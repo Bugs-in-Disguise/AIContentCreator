@@ -37,11 +37,10 @@ main.add_url_rule("/login", view_func=login, methods=['GET', 'POST'])
 main.add_url_rule("/logout", view_func=logout, methods=['GET'])
 # login_required(logout)
 
-main.add_url_rule("/register", view_func=register, methods=["GET", "POST"])
+main.add_url_rule("/register", view_func=login_required(register), methods=["GET", "POST"])
 
-main.add_url_rule("/create_post", view_func=create_post, methods=["GET", "POST"])
+main.add_url_rule("/create_post", view_func=login_required(create_post), methods=["GET", "POST"])
 
-main.add_url_rule("/post/<string:title>", view_func=serve_post, methods=["GET", "POST"])
-# login_required(serve_post)
+main.add_url_rule("/post/<string:title>", view_func=login_required(serve_post), methods=["GET", "POST"])
 
-main.add_url_rule("/image/<int:post_id>", view_func=get_image, methods=["GET"])
+main.add_url_rule("/image/<int:post_id>", view_func=login_required(get_image), methods=["GET"])
